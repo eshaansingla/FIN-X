@@ -4,7 +4,6 @@ Reads from environment / .env automatically via pydantic-settings.
 All other modules import `settings` from here.
 """
 from __future__ import annotations
-import os
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -12,12 +11,10 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
-        extra="ignore",          # silently ignore unrelated .env keys
+        extra="ignore",
     )
 
     # ── Database ─────────────────────────────────────────────
-    # PostgreSQL in production  →  postgresql+psycopg2://user:pass@host/db
-    # SQLite for local dev      →  sqlite:///./data/finx.db  (default)
     DATABASE_URL: str = "sqlite:///./data/finx.db"
 
     # ── JWT ──────────────────────────────────────────────────
@@ -26,26 +23,24 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     REFRESH_TOKEN_EXPIRE_DAYS: int = 14
 
-    # ── SMTP (Gmail App Password recommended) ────────────────
+    # ── SMTP ─────────────────────────────────────────────────
     SMTP_HOST: str = "smtp.gmail.com"
     SMTP_PORT: int = 587
-    SMTP_USER: str = ""   # Brevo SMTP login (axxx@smtp-brevo.com)
-    SMTP_PASS: str = ""   # Brevo SMTP key
-    SMTP_FROM: str = ""   # Verified sender email shown in From header
+    SMTP_USER: str = ""
+    SMTP_PASS: str = ""
+    SMTP_FROM: str = ""
 
     # ── URLs ─────────────────────────────────────────────────
-    APP_URL: str = os.getenv("APP_URL", "http://localhost:5173")      # frontend
-    BACKEND_URL: str = os.getenv("BACKEND_URL", "http://localhost:8000")  # this server
+    # Defaults for local dev — Render ENV will override these
+    APP_URL: str = "http://localhost:5173"
+    BACKEND_URL: str = "http://localhost:8000"
 
     # ── Google OAuth ─────────────────────────────────────────
     GOOGLE_CLIENT_ID: str = ""
     GOOGLE_CLIENT_SECRET: str = ""
-    # In local dev, the frontend runs on :5173 and proxies /api -> :8000.
-    # Using a :5173 redirect keeps the auth session cookie on the same origin.
-    GOOGLE_REDIRECT_URI: str = os.getenv(
-    "GOOGLE_REDIRECT_URI",
-    "https://fin-x-backend-diib.onrender.com/api/v2/auth/google/callback"
-)
+
+    # MUST match Google Console + Render env
+    GOOGLE_REDIRECT_URI: str = "https://fin-x-backend-diib.onrender.com/api/v2/auth/google/callback"
 
 
 settings = Settings()
