@@ -4,7 +4,7 @@ Reads from environment / .env automatically via pydantic-settings.
 All other modules import `settings` from here.
 """
 from __future__ import annotations
-
+import os
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -35,7 +35,7 @@ class Settings(BaseSettings):
 
     # ── URLs ─────────────────────────────────────────────────
     APP_URL: str = "http://localhost:5173"      # frontend
-    BACKEND_URL: str = "http://localhost:8000"  # this server
+    BACKEND_URL: str = os.getenv("BACKEND_URL", "http://localhost:8000")  # this server
 
     # ── Google OAuth ─────────────────────────────────────────
     GOOGLE_CLIENT_ID: str = ""
