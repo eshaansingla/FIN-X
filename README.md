@@ -495,7 +495,7 @@ FIN-X/
 | The old way | The FIN-X way |
 |---|---|
 | Raw NSE bulk deal CSV — no context | AI-explained signal with risk level and confidence score |
-| Single AI model — single point of failure | 3-tier stack: Gemini → GPT-4o mini → rules. Zero downtime. |
+| Single AI model — single point of failure | 3-tier stack: Groq → GPT-4o mini → rules. Zero downtime. |
 | Stock screeners that predict | Explanation-first: *why* it happened, not just *what* |
 | Generic financial chatbots | Context-injected: live prices + deals + news in every answer |
 | No auth or basic sessions | Production JWT + Google OAuth + bcrypt + rate limiting |
